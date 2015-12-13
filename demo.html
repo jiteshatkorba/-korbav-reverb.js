@@ -4,9 +4,16 @@
     <meta charset="utf-8">
     <title>Reverb.js - Demo</title>
     <script type="text/javascript" src="https://raw.githubusercontent.com/burnson/Reverb.js/master/reverb.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Inconsolata">
+    <style>
+      body {
+        font-family: 'Inconsolata', monospace;
+      }
+    </style>
   </head>
   <body>
-    <div>Reverb.js</div>
+    <div style='font-size:48px;'>Reverb.js</div>
+    <hr/>
 <script type="text/javascript">
 var reverb, masterGain, context;
 
@@ -32,8 +39,8 @@ function playScale () {
   var notesGoingDown = [48, 47, 45, 43, 41, 40, 38, 36];
   var s = context.currentTime;
   for (i = 0; i < notesGoingUp.length; i++) {
-    scheduleSynthNote(notesGoingUp[i], s + 1 + i * 0.5, 0.25, loudness);
-    scheduleSynthNote(notesGoingDown[i], s + 1 + i * 0.5, 0.25, loudness);
+    scheduleSynthNote(notesGoingUp[i], s + 0.1 + i * 0.5, 0.25, loudness);
+    scheduleSynthNote(notesGoingDown[i], s + 0.1 + i * 0.5, 0.25, loudness);
   }
 }
 
@@ -84,6 +91,46 @@ function testReverb (url) {
 window.onload = initialize;
 window.onbeforeunload = shutdownGracefully;
         </script>
-        <a href="#" onclick="testReverb('https://github.com/burnson/Reverb.js/raw/master/Library/StMarysAbbeyReconstructionPhase1.m4a');">Try StMarysAbbeyReconstructionPhase1.m4a</a>
+<!--BEGIN GENERATED-->
+<h1>InsidePiano <a href="javascript:testReverb('https://github.com/burnson/Reverb.js/raw/master/Library/InsidePiano.wav');">(listen)</a></h1>
+<h2>Attribution</h2><p>Recorded by William Andrew Burnson (2013)<br/>An impulse response recorded from just outside a Yamaha baby grand piano with the damper pedal down.<br/><br/>Attribution Share Alike Creative Commons<br/>http://creativecommons.org/licenses/by-sa/3.0/
+</p>
+<h2>Usage</h2>
+<pre>var audioContext = (your audio context);
+reverbjs.extend(audioContext);
+var reverbUrl = "https://github.com/burnson/Reverb.js/raw/master/Library/InsidePiano.wav";
+var reverbNode = audioContext.createReverbFromUrl(reverbUrl, function() {
+  console.log("Loaded reverb " + reverbUrl);
+});
+reverbNode.connect(audioContext.destination);
+(some source node).connect(reverbNode);
+</pre>
+<h1>MidiverbMark2Preset29 <a href="javascript:testReverb('https://github.com/burnson/Reverb.js/raw/master/Library/MidiverbMark2Preset29.wav');">(listen)</a></h1>
+<h2>Attribution</h2><p>Recorded by William Andrew Burnson (2011)<br/>An impulse response recorded from preset 29 on an Alesis Midiverb II.<br/><br/>Attribution Share Alike Creative Commons<br/>http://creativecommons.org/licenses/by-sa/3.0/
+</p>
+<h2>Usage</h2>
+<pre>var audioContext = (your audio context);
+reverbjs.extend(audioContext);
+var reverbUrl = "https://github.com/burnson/Reverb.js/raw/master/Library/MidiverbMark2Preset29.wav";
+var reverbNode = audioContext.createReverbFromUrl(reverbUrl, function() {
+  console.log("Loaded reverb " + reverbUrl);
+});
+reverbNode.connect(audioContext.destination);
+(some source node).connect(reverbNode);
+</pre>
+<h1>StMarysAbbeyReconstructionPhase1 <a href="javascript:testReverb('https://github.com/burnson/Reverb.js/raw/master/Library/StMarysAbbeyReconstructionPhase1.wav');">(listen)</a></h1>
+<h2>Attribution</h2><p>By OpenAirLib (2011)<br/>http://www.openairlib.net/auralizationdb/content/st-marys-abbey-reconstruction<br/><br/>"The abbey of St. Mary was mostly destroyed during the dissolution under the rule of Henry VIII and now only ruins remain. These ruins can be found in the Museum Gardens adjacent to the river Ouse in York city. Virtual models of this now derelict church were built using measurements taken from scaled plans and other sources of architectural evidence. Impulse responses were then created using ray-based room acoustic modelling software. Three different models of the church were used with increasing levels of detail in their geometric structure, referred to as Phase 1, Phase 2 and Phase 3. The work was carried out as part of a Bachelor of Engineering project at the Audiolab in the University of York."<br/><br/>Attribution Share Alike Creative Commons<br/>http://creativecommons.org/licenses/by-sa/3.0/<br/>
+</p>
+<h2>Usage</h2>
+<pre>var audioContext = (your audio context);
+reverbjs.extend(audioContext);
+var reverbUrl = "https://github.com/burnson/Reverb.js/raw/master/Library/StMarysAbbeyReconstructionPhase1.wav";
+var reverbNode = audioContext.createReverbFromUrl(reverbUrl, function() {
+  console.log("Loaded reverb " + reverbUrl);
+});
+reverbNode.connect(audioContext.destination);
+(some source node).connect(reverbNode);
+</pre>
+<!--END GENERATED-->
     </body>
 </html>

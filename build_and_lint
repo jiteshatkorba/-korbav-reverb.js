@@ -9,3 +9,39 @@ end
 
 verbose('jslint --indent 2 --ass --sloppy --stupid --evil reverb.js')
 verbose('uglifyjs reverb.js --compress > reverb.min.js')
+
+demo = File.read('demo.html')
+
+generated = "<!--BEGIN GENERATED-->\n"
+Dir.glob('Library/*.wav') {|file|
+  url = 'https://github.com/burnson/Reverb.js/raw/master/' + file
+  name = File.basename(file, File.extname(file))
+  description = File.read('Library/' + name + '.attribution.txt')
+  x = ''
+  x += "<h1>#{name} "
+  x += '<a href="javascript:testReverb('
+  x += "'#{url}'"
+  x += ');">'
+  x += "(listen)"
+  x += "</a></h1>\n"
+  x += "<h2>Attribution</h2>"
+  x += "<p>"
+  x += description.gsub("\n", "<br/>") + "\n"
+  x += "</p>\n"
+  x += "<h2>Usage</h2>\n"
+  x += "<pre>"
+  x += "var audioContext = (your audio context);\n"
+  x += "reverbjs.extend(audioContext);\n"
+  x += "var reverbUrl = \"#{url}\";\n"
+  x += "var reverbNode = audioContext.createReverbFromUrl(reverbUrl, function() {\n"
+  x += "  console.log(\"Loaded reverb \" + reverbUrl);\n"
+  x += "});\n"
+  x += "reverbNode.connect(audioContext.destination);\n"
+  x += "(some source node).connect(reverbNode);\n"
+  x += "</pre>\n"
+  generated += x
+}
+generated += "<!--END GENERATED-->"
+
+new_demo = demo.gsub(/[<].--BEGIN.*END GENERATED--[>]/m) {generated}
+File.write('demo.html', new_demo)
