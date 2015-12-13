@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+repo_dir = File.expand_path(File.dirname(__FILE__))
+Dir.chdir(repo_dir)
+
+def verbose(command)
+  puts "--> #{command}"
+  system(command) or raise("Failed: #{command}")
+end
+
+verbose('jslint --indent 2 --ass --sloppy --stupid --evil reverb.js')
