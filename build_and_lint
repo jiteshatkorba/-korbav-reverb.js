@@ -8,3 +8,4 @@ def verbose(command)
 end
 
 verbose('jslint --indent 2 --ass --sloppy --stupid --evil reverb.js')
+verbose('uglifyjs reverb.js --compress > reverb.min.js')
