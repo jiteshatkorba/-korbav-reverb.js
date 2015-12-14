@@ -93,5 +93,26 @@ var reverbjs = {
       request.send();
       return reverbNode;
     };
+
+    audioContext.createReverbFromBase64Url = function (audioUrl, callback) {
+      console.log('Downloading base64 impulse response from ' + audioUrl);
+      var reverbNode = audioContext.createConvolver(),
+        request = new XMLHttpRequest();
+      request.open('GET', audioUrl, true);
+      request.onreadystatechange = function () {
+        if (request.readyState === 4 && request.status === 200) {
+          console.log('Downloaded impulse response');
+          decodeAndSetupBuffer(reverbNode,
+            decodeBase64ToArrayBuffer(request.response),
+            callback);
+        }
+      };
+      request.onerror = function (e) {
+        console.log('There was an error receiving the response: ' + e);
+        reverbjs.networkError = e;
+      };
+      request.send();
+      return reverbNode;
+    };
   }
 };

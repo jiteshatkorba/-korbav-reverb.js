@@ -16,6 +16,7 @@ This will add two functions to the audio context:
 ```
 audioContext.createReverbFromBase64(audioBase64, callback) -> AudioNode
 audioContext.createReverbFromUrl(audioUrl, callback) -> AudioNode
+audioContext.createReverbFromBase64Url(audioBase64, callback) -> AudioNode
 ```
 
 These act like any of the other ``audioContext.create...()`` functions, and each immediately returns a new node (of the ConvolverNode type) and asynchronously attempts to fetch and/or decode the given impulse response into the convolver node's ``buffer``, calling the optional ``callback`` after it has successfully loaded.
@@ -23,5 +24,7 @@ These act like any of the other ``audioContext.create...()`` functions, and each
 The ``audioContext.createReverbFromBase64`` function accepts a Base64 string representation of the audio file (without newlines). The characters allowable by the Base64 decoder are A-Z, a-z, 0-9, +, /, and =. Base64 is useful for embedding the impulse response into your JavaScript (for local testing, resource consolidation, etc.).
 
 Alternatively, you can use the ``audioContext.createReverbFromUrl`` to load the impulse response from any URL.
+
+Finally, if only plain-text URLs are accessible from your site's origin (as is the case with the demo on GitHub), there is a ``audioContext.createReverbFromBase64Url`` function, which fetches the Base64-encoded contents of an audio file from a URL.
 
 For the best cross-platform performance, use **16-bit, 2 channel (stereo), 44.1KHz** **WAV** (uncompressed) or **M4A** (AAC compressed) impulse responses. As of late 2015, there is universal support for both WAV and M4A in all major browsers, so the choice to use WAV or M4A mostly depends on whether fidelity or size is most important. Keep in mind that audio codecs are primarily designed to compress sound, speech, and music—not impulse responses. Depending on the nature of the impulse response, compression may result in a noticeable change in the *color* of reverberation.
