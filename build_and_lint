@@ -42,6 +42,12 @@ Dir.glob('Library/*.wav') {|file|
   generated += x
 }
 generated += "<!--END GENERATED-->"
+reverbjs = "<!--BEGIN REVERBJS-->\n"
+reverbjs += "<script type=\"text/javascript\">\n"
+reverbjs += File.read('reverb.js')
+reverbjs += "</script>"
+reverbjs += "<!--END REVERBJS-->"
 
-new_demo = demo.gsub(/[<].--BEGIN.*END GENERATED--[>]/m) {generated}
-File.write('demo.html', new_demo)
+demo = demo.gsub(/[<].--BEGIN GENERATED.*END GENERATED--[>]/m) {generated}
+demo = demo.gsub(/[<].--BEGIN REVERBJS.*END REVERBJS--[>]/m) {reverbjs}
+File.write('demo.html', demo)
