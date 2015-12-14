@@ -14,7 +14,7 @@ demo = File.read('demo.html')
 
 generated = "<!--BEGIN GENERATED-->\n"
 Dir.glob('Library/*.wav') {|file|
-  url = 'https://github.com/burnson/Reverb.js/raw/master/' + file
+  url = 'https://rawgit.com/burnson/Reverb.js/master/' + file
   name = File.basename(file, File.extname(file))
   description = File.read('Library/' + name + '.attribution.txt')
   x = ''
