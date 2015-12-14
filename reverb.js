@@ -86,6 +86,7 @@ var reverbjs = {
       };
       request.onerror = function (e) {
         console.log('There was an error receiving the response: ' + e);
+        reverbjs.networkError = e;
       };
       request.send();
       return reverbNode;
