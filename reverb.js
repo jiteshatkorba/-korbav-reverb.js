@@ -57,10 +57,13 @@ var reverbjs = {
 
     function decodeAndSetupBuffer(node, arrayBuffer, callback) {
       audioContext.decodeAudioData(arrayBuffer, function (audioBuffer) {
+        console.log('Finished decoding audio data.');
         node.buffer = audioBuffer;
         if (typeof callback === "function" && audioBuffer !== null) {
           callback(node);
         }
+      }, function (e) {
+        console.log('Could not decode audio data: ' + e);
       });
     }
 
@@ -72,12 +75,17 @@ var reverbjs = {
     };
 
     audioContext.createReverbFromUrl = function (audioUrl, callback) {
+      console.log('Downloading impulse response from ' + audioUrl);
       var reverbNode = audioContext.createConvolver(),
         request = new XMLHttpRequest();
       request.open('GET', audioUrl, true);
       request.responseType = 'arraybuffer';
       request.onload = function () {
+        console.log('Downloaded impulse response');
         decodeAndSetupBuffer(reverbNode, request.response, callback);
+      };
+      request.onerror = function (e) {
+        console.log('There was an error receiving the response: ' + e);
       };
       request.send();
       return reverbNode;
