@@ -78,8 +78,6 @@ var reverbjs = {
       console.log('Downloading impulse response from ' + audioUrl);
       var reverbNode = audioContext.createConvolver(),
         request = new XMLHttpRequest();
-      request.open('GET', audioUrl, true);
-      request.responseType = 'arraybuffer';
       request.onreadystatechange = function () {
         if (request.readyState === 4 && request.status === 200) {
           console.log('Downloaded impulse response');
@@ -90,6 +88,8 @@ var reverbjs = {
         console.log('There was an error receiving the response: ' + e);
         reverbjs.networkError = e;
       };
+      request.responseType = 'arraybuffer';
+      request.open('GET', audioUrl, true);
       request.send();
       return reverbNode;
     };
