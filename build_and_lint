@@ -14,7 +14,7 @@ demo = File.read('index.html')
 
 generated = "<!--BEGIN GENERATED-->\n"
 Dir.glob('Library/*.wav') {|file|
-  url = 'https://raw.githubusercontent.com/burnson/Reverb.js/master/' + file + '.base64'
+  url = file
   name = File.basename(file, File.extname(file))
   description = File.read('Library/' + name + '.attribution.txt')
   x = ''
@@ -33,7 +33,7 @@ Dir.glob('Library/*.wav') {|file|
   x += "var audioContext = (your audio context);\n"
   x += "reverbjs.extend(audioContext);\n"
   x += "var reverbUrl = \"#{url}\";\n"
-  x += "var reverbNode = audioContext.createReverbFromBase64Url(reverbUrl, function() {\n"
+  x += "var reverbNode = audioContext.createReverbFromUrl(reverbUrl, function() {\n"
   x += "  console.log(\"Loaded reverb \" + reverbUrl);\n"
   x += "});\n"
   x += "reverbNode.connect(audioContext.destination);\n"
