@@ -2,31 +2,37 @@
 
 repo_dir = File.expand_path(File.dirname(__FILE__))
 
-if ARGV.length != 1
-  puts 'Usage: import_impulse_response [ir-audio-file]'
+if ARGV.length < 1
+  puts 'Usage: import_impulse_response [ir-audio-file] ...'
+  exit
 end
 
-in_file = ARGV[0]
+def verbose(command)
+  puts "--> #{command}"
+  system(command)
+end
 
-name = File.basename(in_file, File.extname(in_file))
+ARGV.each do |in_file|
+  name = File.basename(in_file, File.extname(in_file))
 
-wav = "#{repo_dir}/Library/#{name}.wav"
-wav_base64 = "#{repo_dir}/Library/#{name}.wav.base64"
-m4a = "#{repo_dir}/Library/#{name}.m4a"
-m4a_base64 = "#{repo_dir}/Library/#{name}.m4a.base64"
-attribution = "#{repo_dir}/Library/#{name}.attribution.txt"
+  wav = "#{repo_dir}/Library/#{name}.wav"
+  wav_base64 = "#{repo_dir}/Library/#{name}.wav.base64"
+  m4a = "#{repo_dir}/Library/#{name}.m4a"
+  m4a_base64 = "#{repo_dir}/Library/#{name}.m4a.base64"
+  attribution = "#{repo_dir}/Library/#{name}.attribution.txt"
 
-# First normalize the input into 16-bit, stereo, 44.1KHz, PCM.
-system("rm -f #{wav}")
-system("ffmpeg -v quiet -i #{in_file} -ac 2 -ar 44100 #{wav}")
+  # First normalize the input into 16-bit, stereo, 44.1KHz, PCM.
+  verbose("rm -f #{wav}")
+  verbose("ffmpeg -v quiet -i #{in_file} -ac 2 -ar 44100 #{wav}")
 
-# Now create the AAC-encoded M4A version.
-system("rm -f #{m4a}")
-system("ffmpeg -v quiet -i #{wav} #{m4a}")
+  # Now create the AAC-encoded M4A version.
+  verbose("rm -f #{m4a}")
+  verbose("ffmpeg -v quiet -i #{wav} #{m4a}")
 
-# Create base64 versions of above files.
-system("openssl base64 -A -in #{wav} > #{wav_base64}")
-system("openssl base64 -A -in #{m4a} > #{m4a_base64}")
+  # Create base64 versions of above files.
+  verbose("openssl base64 -A -in #{wav} > #{wav_base64}")
+  verbose("openssl base64 -A -in #{m4a} > #{m4a_base64}")
 
-# Touch the attribution file.
-system("touch #{attribution}")
+  # Touch the attribution file.
+  verbose("touch #{attribution}")
+end
