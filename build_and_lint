@@ -14,7 +14,7 @@ demo = File.read('index.html')
 
 generated = "<!--BEGIN GENERATED-->\n"
 Dir.glob('Library/*.wav') {|file|
-  url = file
+  url = 'http://reverbjs.org/' + file
   name = File.basename(file, File.extname(file))
   description = File.read('Library/' + name + '.attribution.txt')
   x = ''
