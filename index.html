@@ -135,6 +135,13 @@ var reverbjs = {
       return reverbNode;
     };
 
+    audioContext.createSourceFromBase64 = function (audioBase64, callback) {
+      var sourceNode = audioContext.createBufferSource();
+      decodeAndSetupBuffer(sourceNode, decodeBase64ToArrayBuffer(audioBase64),
+        callback);
+      return sourceNode;
+    };
+
     audioContext.createReverbFromUrl = function (audioUrl, callback) {
       console.log('Downloading impulse response from ' + audioUrl);
       var reverbNode = audioContext.createConvolver(),
@@ -153,6 +160,26 @@ var reverbjs = {
       request.responseType = 'arraybuffer';
       request.send();
       return reverbNode;
+    };
+
+    audioContext.createSourceFromUrl = function (audioUrl, callback) {
+      console.log('Downloading sound from ' + audioUrl);
+      var sourceNode = audioContext.createBufferSource(),
+        request = new XMLHttpRequest();
+      request.open('GET', audioUrl, true);
+      request.onreadystatechange = function () {
+        if (request.readyState === 4 && request.status === 200) {
+          console.log('Downloaded sound');
+          decodeAndSetupBuffer(sourceNode, request.response, callback);
+        }
+      };
+      request.onerror = function (e) {
+        console.log('There was an error receiving the response: ' + e);
+        reverbjs.networkError = e;
+      };
+      request.responseType = 'arraybuffer';
+      request.send();
+      return sourceNode;
     };
 
     audioContext.createReverbFromBase64Url = function (audioUrl, callback) {
@@ -174,6 +201,27 @@ var reverbjs = {
       };
       request.send();
       return reverbNode;
+    };
+
+    audioContext.createSourceFromBase64Url = function (audioUrl, callback) {
+      console.log('Downloading base64 sound from ' + audioUrl);
+      var sourceNode = audioContext.createBufferSource(),
+        request = new XMLHttpRequest();
+      request.open('GET', audioUrl, true);
+      request.onreadystatechange = function () {
+        if (request.readyState === 4 && request.status === 200) {
+          console.log('Downloaded sound');
+          decodeAndSetupBuffer(sourceNode,
+            decodeBase64ToArrayBuffer(request.response),
+            callback);
+        }
+      };
+      request.onerror = function (e) {
+        console.log('There was an error receiving the response: ' + e);
+        reverbjs.networkError = e;
+      };
+      request.send();
+      return sourceNode;
     };
   }
 };
@@ -265,53 +313,97 @@ window.onbeforeunload = shutdownGracefully;
 <h3>Attribution</h3><p>Recorded by William Andrew Burnson (2013)<br/>An impulse response recorded from just outside a Yamaha baby grand piano with the damper pedal down.<br/><br/>Attribution Share Alike Creative Commons<br/>http://creativecommons.org/licenses/by-sa/3.0/
 </p>
 <h3>Usage</h3>
-<pre><code>var audioContext = (your audio context);
+<pre><code>&lt;script src="http://reverbjs.org/reverb.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+// 1) Setup your audio context (once) and extend with Reverb.js.
+var audioContext = new (window.AudioContext || window.webkitAudioContext)();
 reverbjs.extend(audioContext);
+
+// 2) Load the impulse response; upon load, connect it to the audio output.
 var reverbUrl = "http://reverbjs.org/Library/InsidePiano.wav";
 var reverbNode = audioContext.createReverbFromUrl(reverbUrl, function() {
-  console.log("Loaded reverb " + reverbUrl);
+  reverbNode.connect(audioContext.destination);
 });
-reverbNode.connect(audioContext.destination);
-(some source node).connect(reverbNode);
+
+// 3) Load a test sound; upon load, connect it to the reverb node.
+var sourceUrl = "http://reverbjs.org/Library/SampleBachCMinorPrelude.m4a";
+var sourceNode = audioContext.createSourceFromUrl(sourceUrl, function() {
+  sourceNode.connect(reverbNode);
+});
+&lt;/script&gt;
+&lt;a href="javascript:sourceNode.start()"&gt;Test&lt;/a&gt;
 </code></pre>
 <h2>MidiverbMark2Preset29 <a href="javascript:testReverb('http://reverbjs.org/Library/MidiverbMark2Preset29.wav');">(listen)</a></h2>
 <h3>Attribution</h3><p>Recorded by William Andrew Burnson (2011)<br/>An impulse response recorded from preset 29 on an Alesis Midiverb II.<br/><br/>Attribution Share Alike Creative Commons<br/>http://creativecommons.org/licenses/by-sa/3.0/
 </p>
 <h3>Usage</h3>
-<pre><code>var audioContext = (your audio context);
+<pre><code>&lt;script src="http://reverbjs.org/reverb.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+// 1) Setup your audio context (once) and extend with Reverb.js.
+var audioContext = new (window.AudioContext || window.webkitAudioContext)();
 reverbjs.extend(audioContext);
+
+// 2) Load the impulse response; upon load, connect it to the audio output.
 var reverbUrl = "http://reverbjs.org/Library/MidiverbMark2Preset29.wav";
 var reverbNode = audioContext.createReverbFromUrl(reverbUrl, function() {
-  console.log("Loaded reverb " + reverbUrl);
+  reverbNode.connect(audioContext.destination);
 });
-reverbNode.connect(audioContext.destination);
-(some source node).connect(reverbNode);
+
+// 3) Load a test sound; upon load, connect it to the reverb node.
+var sourceUrl = "http://reverbjs.org/Library/SampleBachCMinorPrelude.m4a";
+var sourceNode = audioContext.createSourceFromUrl(sourceUrl, function() {
+  sourceNode.connect(reverbNode);
+});
+&lt;/script&gt;
+&lt;a href="javascript:sourceNode.start()"&gt;Test&lt;/a&gt;
 </code></pre>
 <h2>StMarysAbbeyReconstructionPhase1 <a href="javascript:testReverb('http://reverbjs.org/Library/StMarysAbbeyReconstructionPhase1.wav');">(listen)</a></h2>
 <h3>Attribution</h3><p>By OpenAirLib (2011)<br/>http://www.openairlib.net/auralizationdb/content/st-marys-abbey-reconstruction<br/><br/>"The abbey of St. Mary was mostly destroyed during the dissolution under the rule of Henry VIII and now only ruins remain. These ruins can be found in the Museum Gardens adjacent to the river Ouse in York city. Virtual models of this now derelict church were built using measurements taken from scaled plans and other sources of architectural evidence. Impulse responses were then created using ray-based room acoustic modelling software. Three different models of the church were used with increasing levels of detail in their geometric structure, referred to as Phase 1, Phase 2 and Phase 3. The work was carried out as part of a Bachelor of Engineering project at the Audiolab in the University of York."<br/><br/>Attribution Share Alike Creative Commons<br/>http://creativecommons.org/licenses/by-sa/3.0/<br/>
 </p>
 <h3>Usage</h3>
-<pre><code>var audioContext = (your audio context);
+<pre><code>&lt;script src="http://reverbjs.org/reverb.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+// 1) Setup your audio context (once) and extend with Reverb.js.
+var audioContext = new (window.AudioContext || window.webkitAudioContext)();
 reverbjs.extend(audioContext);
+
+// 2) Load the impulse response; upon load, connect it to the audio output.
 var reverbUrl = "http://reverbjs.org/Library/StMarysAbbeyReconstructionPhase1.wav";
 var reverbNode = audioContext.createReverbFromUrl(reverbUrl, function() {
-  console.log("Loaded reverb " + reverbUrl);
+  reverbNode.connect(audioContext.destination);
 });
-reverbNode.connect(audioContext.destination);
-(some source node).connect(reverbNode);
+
+// 3) Load a test sound; upon load, connect it to the reverb node.
+var sourceUrl = "http://reverbjs.org/Library/SampleBachCMinorPrelude.m4a";
+var sourceNode = audioContext.createSourceFromUrl(sourceUrl, function() {
+  sourceNode.connect(reverbNode);
+});
+&lt;/script&gt;
+&lt;a href="javascript:sourceNode.start()"&gt;Test&lt;/a&gt;
 </code></pre>
 <h2>UndergroundCarPark <a href="javascript:testReverb('http://reverbjs.org/Library/UndergroundCarPark.wav');">(listen)</a></h2>
 <h3>Attribution</h3><p>By OpenAirLib (2014)<br/>http://www.openairlib.net/auralizationdb/content/underground-car-park<br/><br/>"First Impulse Response recording in an underground car park. Has a slightly nice resonance in it from the metal pipes on the ceiling."<br/><br/>Attribution Share Alike Creative Commons<br/>http://creativecommons.org/licenses/by-sa/3.0/<br/>
 </p>
 <h3>Usage</h3>
-<pre><code>var audioContext = (your audio context);
+<pre><code>&lt;script src="http://reverbjs.org/reverb.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+// 1) Setup your audio context (once) and extend with Reverb.js.
+var audioContext = new (window.AudioContext || window.webkitAudioContext)();
 reverbjs.extend(audioContext);
+
+// 2) Load the impulse response; upon load, connect it to the audio output.
 var reverbUrl = "http://reverbjs.org/Library/UndergroundCarPark.wav";
 var reverbNode = audioContext.createReverbFromUrl(reverbUrl, function() {
-  console.log("Loaded reverb " + reverbUrl);
+  reverbNode.connect(audioContext.destination);
 });
-reverbNode.connect(audioContext.destination);
-(some source node).connect(reverbNode);
+
+// 3) Load a test sound; upon load, connect it to the reverb node.
+var sourceUrl = "http://reverbjs.org/Library/SampleBachCMinorPrelude.m4a";
+var sourceNode = audioContext.createSourceFromUrl(sourceUrl, function() {
+  sourceNode.connect(reverbNode);
+});
+&lt;/script&gt;
+&lt;a href="javascript:sourceNode.start()"&gt;Test&lt;/a&gt;
 </code></pre>
 <!--END GENERATED-->
     </article>

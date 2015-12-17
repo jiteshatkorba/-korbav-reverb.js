@@ -74,6 +74,13 @@ var reverbjs = {
       return reverbNode;
     };
 
+    audioContext.createSourceFromBase64 = function (audioBase64, callback) {
+      var sourceNode = audioContext.createBufferSource();
+      decodeAndSetupBuffer(sourceNode, decodeBase64ToArrayBuffer(audioBase64),
+        callback);
+      return sourceNode;
+    };
+
     audioContext.createReverbFromUrl = function (audioUrl, callback) {
       console.log('Downloading impulse response from ' + audioUrl);
       var reverbNode = audioContext.createConvolver(),
@@ -92,6 +99,26 @@ var reverbjs = {
       request.responseType = 'arraybuffer';
       request.send();
       return reverbNode;
+    };
+
+    audioContext.createSourceFromUrl = function (audioUrl, callback) {
+      console.log('Downloading sound from ' + audioUrl);
+      var sourceNode = audioContext.createBufferSource(),
+        request = new XMLHttpRequest();
+      request.open('GET', audioUrl, true);
+      request.onreadystatechange = function () {
+        if (request.readyState === 4 && request.status === 200) {
+          console.log('Downloaded sound');
+          decodeAndSetupBuffer(sourceNode, request.response, callback);
+        }
+      };
+      request.onerror = function (e) {
+        console.log('There was an error receiving the response: ' + e);
+        reverbjs.networkError = e;
+      };
+      request.responseType = 'arraybuffer';
+      request.send();
+      return sourceNode;
     };
 
     audioContext.createReverbFromBase64Url = function (audioUrl, callback) {
@@ -113,6 +140,27 @@ var reverbjs = {
       };
       request.send();
       return reverbNode;
+    };
+
+    audioContext.createSourceFromBase64Url = function (audioUrl, callback) {
+      console.log('Downloading base64 sound from ' + audioUrl);
+      var sourceNode = audioContext.createBufferSource(),
+        request = new XMLHttpRequest();
+      request.open('GET', audioUrl, true);
+      request.onreadystatechange = function () {
+        if (request.readyState === 4 && request.status === 200) {
+          console.log('Downloaded sound');
+          decodeAndSetupBuffer(sourceNode,
+            decodeBase64ToArrayBuffer(request.response),
+            callback);
+        }
+      };
+      request.onerror = function (e) {
+        console.log('There was an error receiving the response: ' + e);
+        reverbjs.networkError = e;
+      };
+      request.send();
+      return sourceNode;
     };
   }
 };
