@@ -18,18 +18,18 @@ Dir.glob('Library/*.wav') {|file|
   name = File.basename(file, File.extname(file))
   description = File.read('Library/' + name + '.attribution.txt')
   x = ''
-  x += "<h1>#{name} "
+  x += "<h2>#{name} "
   x += '<a href="javascript:testReverb('
   x += "'#{url}'"
   x += ');">'
   x += "(listen)"
-  x += "</a></h1>\n"
-  x += "<h2>Attribution</h2>"
+  x += "</a></h2>\n"
+  x += "<h3>Attribution</h3>"
   x += "<p>"
   x += description.gsub("\n", "<br/>") + "\n"
   x += "</p>\n"
-  x += "<h2>Usage</h2>\n"
-  x += "<pre>"
+  x += "<h3>Usage</h3>\n"
+  x += "<pre><code>"
   x += "var audioContext = (your audio context);\n"
   x += "reverbjs.extend(audioContext);\n"
   x += "var reverbUrl = \"#{url}\";\n"
@@ -38,7 +38,7 @@ Dir.glob('Library/*.wav') {|file|
   x += "});\n"
   x += "reverbNode.connect(audioContext.destination);\n"
   x += "(some source node).connect(reverbNode);\n"
-  x += "</pre>\n"
+  x += "</code></pre>\n"
   generated += x
 }
 generated += "<!--END GENERATED-->"
