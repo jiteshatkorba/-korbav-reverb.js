@@ -357,6 +357,30 @@ var sourceNode = audioContext.createSourceFromUrl(sourceUrl, function() {
 &lt;/script&gt;
 &lt;a href="javascript:sourceNode.start()"&gt;Test&lt;/a&gt;
 </code></pre>
+<h2>StAndrewsChurch <a href="javascript:testReverb('http://reverbjs.org/Library/StAndrewsChurch.wav');">(listen)</a></h2>
+<h3>Attribution</h3><p>By OpenAirLib (2004)<br/>http://www.openairlib.net/auralizationdb/content/st-andrews-church<br/><br/>"St Andrew’s Church, built in the 14th Century, has one of the finest examples of in-situ acoustic jars (vases or pots) in the UK. These jars were common to European church construction in the late Middle Ages and are said to be based on the ideas of Roman architect Vitruvius, who discussed the use of resonant jars in the design of amphitheatres to provide clarity of voice presentation. They are designed as Helmholtz resonators, giving narrow band energy absorption according to the natural frequency of the jar although there is little conclusive acoustical evidence to show that they behave as designed. Studies suggest that the success or otherwise of these devices depends on the number of jars used and their placement, as well as the characteristics of the building and jars themselves. In anechoic and reverberant chambers the absorption effects of such jars are weak and highly selective, although can be significant below 200Hz. Together with their additional diffusive effects, the jars potentially help to eliminate strong normal modes and hence can be made effective with careful tuning and positioning. St Andrew’s Church has 11 jars placed high in the chancel, 6 in the north wall and 5 in the south, arranged at irregular intervals such that there are no directly opposite pairs."<br/><br/>Attribution Share Alike Creative Commons<br/>http://creativecommons.org/licenses/by-sa/3.0/<br/>
+</p>
+<h3>Usage</h3>
+<pre><code>&lt;script src="http://reverbjs.org/reverb.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+// 1) Setup your audio context (once) and extend with Reverb.js.
+var audioContext = new (window.AudioContext || window.webkitAudioContext)();
+reverbjs.extend(audioContext);
+
+// 2) Load the impulse response; upon load, connect it to the audio output.
+var reverbUrl = "http://reverbjs.org/Library/StAndrewsChurch.wav";
+var reverbNode = audioContext.createReverbFromUrl(reverbUrl, function() {
+  reverbNode.connect(audioContext.destination);
+});
+
+// 3) Load a test sound; upon load, connect it to the reverb node.
+var sourceUrl = "http://reverbjs.org/Library/SampleBachCMinorPrelude.m4a";
+var sourceNode = audioContext.createSourceFromUrl(sourceUrl, function() {
+  sourceNode.connect(reverbNode);
+});
+&lt;/script&gt;
+&lt;a href="javascript:sourceNode.start()"&gt;Test&lt;/a&gt;
+</code></pre>
 <h2>StMarysAbbeyReconstructionPhase1 <a href="javascript:testReverb('http://reverbjs.org/Library/StMarysAbbeyReconstructionPhase1.wav');">(listen)</a></h2>
 <h3>Attribution</h3><p>By OpenAirLib (2011)<br/>http://www.openairlib.net/auralizationdb/content/st-marys-abbey-reconstruction<br/><br/>"The abbey of St. Mary was mostly destroyed during the dissolution under the rule of Henry VIII and now only ruins remain. These ruins can be found in the Museum Gardens adjacent to the river Ouse in York city. Virtual models of this now derelict church were built using measurements taken from scaled plans and other sources of architectural evidence. Impulse responses were then created using ray-based room acoustic modelling software. Three different models of the church were used with increasing levels of detail in their geometric structure, referred to as Phase 1, Phase 2 and Phase 3. The work was carried out as part of a Bachelor of Engineering project at the Audiolab in the University of York."<br/><br/>Attribution Share Alike Creative Commons<br/>http://creativecommons.org/licenses/by-sa/3.0/<br/>
 </p>
