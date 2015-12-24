@@ -21,10 +21,21 @@ Dir.glob('Library/*.wav') {|file|
   x = ''
   x += "<h2>#{name} "
   x += '<a href="javascript:testReverb('
-  x += "'#{url}'"
+  x += "'#{url}', 'scale'"
   x += ');">'
-  x += "(listen)"
-  x += "</a></h2>\n"
+  x += "(synth) "
+  x += "</a>"
+  x += '<a href="javascript:testReverb('
+  x += "'#{url}', 'piece'"
+  x += ');">'
+  x += "(piano) "
+  x += "</a>"
+  x += '<a href="javascript:testReverb('
+  x += "'#{url}', 'stop'"
+  x += ');">'
+  x += "(stop)"
+  x += "</a>"
+  x += "</h2>\n"
   x += "<h3>Attribution</h3>"
   x += "<p>"
   x += description.gsub("\n", "<br/>") + "\n"
