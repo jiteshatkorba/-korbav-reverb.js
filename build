@@ -23,13 +23,13 @@ Dir.glob('Library/*.wav') {|file|
   x += '<a href="javascript:testReverb('
   x += "'#{url}', 'scale'"
   x += ');">'
-  x += "(synth) "
-  x += "</a>"
+  x += "(synth)"
+  x += "</a> "
   x += '<a href="javascript:testReverb('
   x += "'#{url}', 'piece'"
   x += ');">'
-  x += "(piano) "
-  x += "</a>"
+  x += "(piano)"
+  x += "</a> "
   x += '<a href="javascript:testReverb('
   x += "'#{url}', 'stop'"
   x += ');">'
