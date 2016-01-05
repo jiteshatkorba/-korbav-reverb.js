@@ -13,7 +13,7 @@ verbose('uglifyjs reverb.js --compress > reverb.min.js')
 demo = File.read('index.html')
 
 generated = "<!--BEGIN GENERATED-->\n"
-Dir.glob('Library/*.wav') {|file|
+Dir.glob('Library/*.m4a') {|file|
   next if file.start_with?('Library/Sample')
   url = 'http://reverbjs.org/' + file
   name = File.basename(file, File.extname(file))
