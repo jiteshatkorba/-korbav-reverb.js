@@ -1,5 +1,4 @@
-/*global ArrayBuffer, Uint8Array, window, XMLHttpRequest*/
-var reverbjs = {
+const reverbjs = {
   extend : function (audioContext) {
     function decodeBase64ToArrayBuffer(input) {
       function encodedValue(input, index) {
@@ -57,7 +56,7 @@ var reverbjs = {
 
     function decodeAndSetupBuffer(node, arrayBuffer, callback) {
       audioContext.decodeAudioData(arrayBuffer, function (audioBuffer) {
-        console.log('Finished decoding audio data.');
+        // console.log('Finished decoding audio data.');
         node.buffer = audioBuffer;
         if (typeof callback === "function" && audioBuffer !== null) {
           callback(node);
@@ -82,13 +81,13 @@ var reverbjs = {
     };
 
     audioContext.createReverbFromUrl = function (audioUrl, callback) {
-      console.log('Downloading impulse response from ' + audioUrl);
+      // console.log('Downloading impulse response from ' + audioUrl);
       var reverbNode = audioContext.createConvolver(),
         request = new XMLHttpRequest();
       request.open('GET', audioUrl, true);
       request.onreadystatechange = function () {
         if (request.readyState === 4 && request.status === 200) {
-          console.log('Downloaded impulse response');
+          // console.log('Downloaded impulse response');
           decodeAndSetupBuffer(reverbNode, request.response, callback);
         }
       };
@@ -102,13 +101,13 @@ var reverbjs = {
     };
 
     audioContext.createSourceFromUrl = function (audioUrl, callback) {
-      console.log('Downloading sound from ' + audioUrl);
+      // console.log('Downloading sound from ' + audioUrl);
       var sourceNode = audioContext.createBufferSource(),
         request = new XMLHttpRequest();
       request.open('GET', audioUrl, true);
       request.onreadystatechange = function () {
         if (request.readyState === 4 && request.status === 200) {
-          console.log('Downloaded sound');
+          // console.log('Downloaded sound');
           decodeAndSetupBuffer(sourceNode, request.response, callback);
         }
       };
@@ -122,13 +121,13 @@ var reverbjs = {
     };
 
     audioContext.createReverbFromBase64Url = function (audioUrl, callback) {
-      console.log('Downloading base64 impulse response from ' + audioUrl);
+      // console.log('Downloading base64 impulse response from ' + audioUrl);
       var reverbNode = audioContext.createConvolver(),
         request = new XMLHttpRequest();
       request.open('GET', audioUrl, true);
       request.onreadystatechange = function () {
         if (request.readyState === 4 && request.status === 200) {
-          console.log('Downloaded impulse response');
+          // console.log('Downloaded impulse response');
           decodeAndSetupBuffer(reverbNode,
             decodeBase64ToArrayBuffer(request.response),
             callback);
@@ -143,13 +142,13 @@ var reverbjs = {
     };
 
     audioContext.createSourceFromBase64Url = function (audioUrl, callback) {
-      console.log('Downloading base64 sound from ' + audioUrl);
+      // console.log('Downloading base64 sound from ' + audioUrl);
       var sourceNode = audioContext.createBufferSource(),
         request = new XMLHttpRequest();
       request.open('GET', audioUrl, true);
       request.onreadystatechange = function () {
         if (request.readyState === 4 && request.status === 200) {
-          console.log('Downloaded sound');
+          // console.log('Downloaded sound');
           decodeAndSetupBuffer(sourceNode,
             decodeBase64ToArrayBuffer(request.response),
             callback);
@@ -164,3 +163,5 @@ var reverbjs = {
     };
   }
 };
+
+export default reverbjs;
