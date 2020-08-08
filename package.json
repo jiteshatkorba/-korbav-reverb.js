@@ -1,0 +1,22 @@
+{
+  "name": "reverb.js",
+  "version": "1.0.0",
+  "description": "Adding reverb to audio elements (forked from burnson/Reverb.js)",
+  "main": "reverb.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/korbav/Reverb.js.git"
+  },
+  "keywords": [
+    "reverb"
+  ],
+  "license": "CC0-1.0",
+  "bugs": {
+    "url": "https://github.com/korbav/Reverb.js/issues"
+  },
+  "homepage": "https://github.com/korbav/Reverb.js#readme",
+  "publishConfig": { "registry": "https://npm.pkg.github.com/" }
+}
