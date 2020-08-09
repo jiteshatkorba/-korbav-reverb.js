@@ -1,6 +1,6 @@
 {
-  "name": "reverb.js",
-  "version": "1.0.1",
+  "name": "@korbav/reverb.js",
+  "version": "1.0.2",
   "description": "Adding reverb to audio elements (forked from burnson/Reverb.js)",
   "main": "reverb.js",
   "scripts": {

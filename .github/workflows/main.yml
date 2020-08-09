@@ -1,0 +1,32 @@
+on:
+  push:
+    branches:
+    - master
+    - release/*
+  pull_request:
+    branches:
+    - master
+
+jobs:
+  npm-publish:
+    name: Publish Latest to NPM
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.client_payload.sha }}
+      - uses: bahmutov/npm-install@v1
+      - name: Extract version
+        id: extract_version
+        uses: Saionaro/extract-package-version@v1.1.1
+      - name: Print version
+        run: echo v${{ steps.extract_version.outputs.version }}
+      - name: Publish to NPM
+        uses: JS-DevTools/npm-publish@v1.4.3
+        with:
+          check-version: true
+          token: ${{ secrets.NPM_TOKEN }}
+          registry: https://registry.npmjs.org/
+          package: package.json
+          access: public
